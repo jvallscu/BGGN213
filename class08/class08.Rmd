@@ -1,0 +1,179 @@
+---
+title: "Class08"
+author: "Joan M. Valls Cuevas"
+date: "4/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##K means clustering and unsupervised learning 
+
+data split up into a pre-defined number of clusters
+
+lots of calculations.
+
+**kmeans(x, center = (num of groups), nstart = (num of iterations))**
+
+scree plots, plot 
+
+#Some exampples for clustering 
+
+```{r}
+#Generate some example data for clustering 
+tmp <- c(rnorm(30,-3), rnorm(30,3))
+x <- cbind(x = tmp, y = rev(tmp))
+
+km <- kmeans(x, centers = 2, nstart = 20)
+
+plot(x, col = km$cluster)
+table(km$cluster)
+
+```
+plot x colored by the kmeans cluster assignment 
+```{r}
+
+plot(x, col = km$cluster)
+points(km$centers, col = "blue", pch = 18, cex = 8)
+```
+
+#Hierarchical clustering 
+
+Here we dont have to spell out the number of clusters before hand but we have to give a it a distance matrix
+
+bottom up or top/down types
+```{r}
+d <- dist(x)
+hc <- hclust(d)
+
+```
+
+Let's plot the resutls 
+
+```{r}
+plot(hc)
+abline( h = 6, col = "red")
+cutree(hc, h = 6)
+gp2 <- cutree(hc, k=2)
+gp3 <- cutree(hc, k=3)
+table(gp2)
+table(gp3)
+```
+
+```{r}
+# Step 1. Generate some example data for clustering
+x2 <- rbind(
+  matrix(rnorm(100, mean=0, sd = 0.3), ncol = 2),   # c1
+  matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2), # c2
+  matrix(c(rnorm(50, mean = 1, sd = 0.3),           # c3
+           rnorm(50, mean = 0, sd = 0.3)), ncol = 2))
+colnames(x2) <- c("x", "y")
+# Step 2. Plot the data without clustering
+plot(x2)
+# Step 3. Generate colors for known clusters
+#         (just so we can compare to hclust results)
+col <- as.factor( rep(c("c1","c2","c3"), each=50) )
+plot(x2, col=col)
+```
+
+Q. Use the dist(), hclust(), plot() and cutree() functions to return 2 and 3 clusters
+Q. How does this compare to your known 'col' groups?
+
+```{r}
+dist_c <- dist(x2)
+hc2 <- hclust(dist_c)
+plot(hc2)
+abline(h = 2, col = "red")
+
+c1 <- cutree(hc2, k = 2)
+c2 <- cutree(hc2, k = 3)
+table(c1)
+table(c2)
+plot(x2, col = c1)
+plot(x2, col = c2)
+```
+## Principal component Analysis (PCA)
+
+We will use the base R **prcom()** function
+
+```{r}
+## You can also download this file from the class website!
+mydata <- read.csv("https://tinyurl.com/expression-CSV",
+row.names=1)
+head(mydata)
+
+```
+
+There are `r nrow(mydata)` genes in this dataset
+
+```{r}
+pca <- prcomp( t(mydata), scale = TRUE)
+summary(prcomp( t(mydata), scale = TRUE))
+```
+
+
+```{r}
+attributes(pca)
+```
+
+```{r}
+plot(pca$x[,1], pca$x[,2])
+
+```
+
+```{r}
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100,1)
+pca.var.per
+```
+
+```{r}
+xlab <- paste("PC1 (", pca.var.per[1],"%)", sep="")
+ylab <- paste("PC1 (", pca.var.per[2],"%)", sep="")
+```
+```{r}
+plot(pca$x[,1],pca$x[,2], xlab=xlab, ylab=ylab)
+text(pca$x[,1],pca$x[,2], colnames(mydata))
+```
+
+
+#PCA of UK data sets
+
+```{r}
+UK_data <- read.csv("UK_foods.csv", row.names = 1)
+
+dim(UK_data)
+```
+
+```{r}
+#View(UK_data)
+barplot(as.matrix(UK_data), beside = T, col=rainbow(nrow(UK_data)))
+```
+ 
+
+
+
+```{r}
+pairs(UK_data, col=rainbow(10), pch=16)
+```
+
+
+
+
+
+```{r}
+# Use the prcomp() PCA function 
+pca <- prcomp( t(UK_data) )
+summary(pca)
+```
+```{r}
+plot(pca$x[,1], pca$x[,2])
+text(pca$x[,1], pca$x[,2], colnames(UK_data))
+
+
+```
+
+
+

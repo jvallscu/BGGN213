@@ -1,0 +1,149 @@
+---
+title: "Unsupervised_learning_2"
+author: "Joan M. Valls Cuevas"
+date: "5/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Unsupervised learning 2
+
+```{r}
+wisc.df <- read.csv("WisconsinCancer.csv")
+```
+Q3
+```{r}
+wisc.data <- as.matrix(wisc.df[,3:32])
+```
+```{r}
+
+length(grep("_mean", colnames(wisc.df)))
+
+
+```
+
+
+```{r}
+row.names(wisc.data) <- wisc.df$id
+```
+
+```{r}
+diagnosis <- wisc.df$diagnosis
+
+```
+Check the mean of the columns in order to see if scaling is appropriate
+```{r}
+round(colMeans(wisc.data), 1)
+#apply(wisc.data, 1 for row 2 for col, SD or mean etc)
+```
+
+
+
+Create a PCA plot and scaling as appropriate
+```{r}
+wisc.pr <- prcomp(wisc.data, scale. = TRUE)
+```
+
+Summary of the PCA data
+```{r}
+summary(wisc.pr)
+```
+
+Creating a biplot of data
+```{r}
+biplot(wisc.pr)
+```
+
+```{r}
+plot(wisc.pr$x[,1], wisc.pr$x[,2], col = diagnosis)
+```
+
+
+```{r}
+plot(wisc.pr$x[,1], wisc.pr$x[,3], col = diagnosis)
+```
+
+```{r}
+pr.var <- wisc.pr$sdev^2
+
+pve <- pr.var/sum(pr.var)
+
+plot(pve, type = "o", xlab = "Principal Component", ylab = "Proportion of Variance explained")
+```
+
+```{r}
+barplot(pve*100, xlab = "Percent of Variance explained", names.arg = paste0("PC", 1:30), cex.names = 0.5, axis.lty = 1)
+
+sum(pr.var)
+```
+
+
+
+```{r}
+data.scaled <- scale(wisc.data)
+
+data.dist <- dist(data.scaled, method = "euclidean")
+
+wisc.hclust <- hclust(data.dist)
+
+plot(wisc.hclust)
+
+
+```
+
+```{r}
+wisc.hclust.clusters <- cutree(wisc.hclust, k = 4)
+```
+
+
+
+```{r}
+table(wisc.hclust.clusters, diagnosis)
+```
+
+
+##Section 5. combining methods (PCA + clustering)
+
+I am going to start with principal components that capture 90% or more of the origical dataset (PC1 to PC7)
+```{r}
+
+wisc.pr.hclust <- hclust(dist(wisc.pr$x[,1:7]), method = "ward.D2")
+```
+Plot the new hierarchical cluster
+```{r}
+plot(wisc.pr.hclust)
+
+grps <- cutree(wisc.pr.hclust, k = 2)
+
+table(grps)
+
+table(grps, diagnosis)
+plot(wisc.pr$x[,1:2], col = grps )
+
+```
+
+##Section 7: Predicting using new data
+
+```{r}
+
+url <- "https://tinyurl.com/new-samples-CSV"
+
+new <- read.csv(url)
+
+npc <- predict(wisc.pr, newdata=new)
+npc
+
+plot(wisc.pr$x[,1:2], col=grps)
+points(npc[,1], npc[,2], col="blue", pch=16, cex=3)
+text(npc[,1], npc[,2], c(1,2), col="white")
+
+```
+
+
+```{r}
+sessionInfo()
+```
+

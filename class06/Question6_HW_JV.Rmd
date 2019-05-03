@@ -1,0 +1,49 @@
+---
+title: "Class 06 Question 6 assignment"
+author: "Joan M. Valls Cuevas"
+date: "4/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Make a function 
+###The following function graphs residue against B-factor for an input protein
+```{r}
+
+bfactorGraph <- function(x, chain="A", elety="CA", typ="l") { 
+#arg "x" is the input protein, a four letter identifier for online file access
+#the other arguments allow the user to modify both the selected part of the pdb file and line type
+
+#upload bio3d to the current workspace
+
+library("bio3d") 
+
+#Read a protein from the pdb database using a four character code
+s1 <- read.pdb(x) 
+
+#Trim the file by a subset of atoms from a larger PDB object
+#default is alpha helix and alpha carbon.
+
+s1.chain <- trim.pdb(s1, chain=chain, elety=elety) 
+
+#select a portion of the chain, more specifically the b-factor
+
+s1.b <- s1.chain$atom$b
+
+#Outputs a graph of a selected portion of the protein by residue number against bfactor
+#(bfactor is the fluctuation of certain atoms at that residue site)
+
+plotb3(s1.b, sse=s1.chain, typ=typ, ylab="Bfactor")
+
+
+}
+```
+Testing my function
+```{r}
+bfactorGraph("4AKE")
+```
+
+
+
