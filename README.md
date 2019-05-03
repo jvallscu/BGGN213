@@ -5,4 +5,8 @@ This is my course from [BGGN-213 from UC San Diego](https://bioboot.github.io/bg
 
 I will add my class content here soon...
 
+<<<<<<< HEAD
 I will start with class-5 onward.
+=======
+I will start with class..05 onward.
+>>>>>>> 9420990e577fca8c2675f080ca3739d3b7020a1b
