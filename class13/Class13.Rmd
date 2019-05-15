@@ -1,0 +1,76 @@
+---
+title: "Class13"
+author: "Joan M. Valls Cuevas"
+date: "5/15/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+dat <- read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+
+datf <- data.frame(dat)
+
+table(dat$Genotype..forward.strand.)
+
+
+```
+
+```{r}
+#proportion
+
+round(table(dat$Genotype..forward.strand.)/nrow(dat) * 100,2)
+
+```
+
+
+Quality scores in 
+```{r}
+library(seqinr)
+library(gtools)
+s2c("DDDDCDEDCDDDDBBDDDCC@")
+phred <- asc( s2c("DDDDCDEDCDDDDBBDDDCC@") ) - 33
+
+
+```
+
+
+Section 4
+```{r}
+dataSet <- read.table("rs8067378_ENSG00000172057.6.txt", sep = " ", header = TRUE)
+```
+
+```{r}
+table(dataSet$geno)
+
+barplot(round(table(dataSet$geno)/nrow(dataSet) *100,2))
+
+dataSet2 <- dataSet[dataSet$geno == "G/G",]
+
+summary(dataSet2$exp)
+
+
+dataSet3 <- dataSet[dataSet$geno == "A/A",]
+
+summary(dataSet3$exp)
+
+dataSet4 <- dataSet[dataSet$geno == "A/G",]
+
+summary(dataSet4$exp)
+
+
+```
+
+
+First try at a box plot to show the data
+```{r}
+# y ~ group
+boxplot(exp ~ geno, data = dataSet, notch = TRUE )
+
+```
+
