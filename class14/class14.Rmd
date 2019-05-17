@@ -1,0 +1,232 @@
+---
+title: "Class 14: Genome informatics part 2"
+author: "Joan M. Valls Cuevas"
+date: "5/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## section 1
+
+```{r}
+metadata <- read.csv("data/airway_metadata.csv", stringsAsFactors = FALSE)
+counts <- read.csv("data/airway_scaledcounts.csv", stringsAsFactors = FALSE)
+
+
+```
+
+Q1. How many genes are we dealing with?
+```{r}
+nrow(counts)
+```
+
+Q2.
+```{r}
+
+
+all(colnames(counts)[-1] == metadata$id)
+
+```
+
+
+Let's access just the controls conts data so we can calculate an averae counts value for each gene in these control samples
+```{r}
+control <- metadata[metadata[,"dex"]=="control",]
+control
+#now we want to get the cols in counts with these 
+control.mean <- rowSums( counts[ ,control$id] )/length(control$id) 
+names(control.mean) <- counts$ensgene
+head(control.mean)
+```
+
+
+
+```{r}
+treated <- metadata[metadata[,"dex"]=="treated",]
+treated.mean <- rowSums( counts[ ,treated$id] )/ length(treated$id)
+names(treated.mean) <- counts$ensgene
+
+mean.counts <- data.frame(control.mean,treated.mean)
+
+
+
+```
+
+
+```{r}
+plot(mean.counts)
+```
+
+
+
+```{r}
+plot(mean.counts, log="xy")
+```
+
+```{r}
+mean.counts$log2fc <- log2((mean.counts[,"treated.mean"])/mean.counts[,"control.mean"])
+head(mean.counts)
+
+```
+
+
+```{r}
+#select the genes that are zero
+to.rm <- unique(which(mean.counts[,1:2] == 0, arr.ind = TRUE )[,1])
+#remove these rows as we can't really say much about these
+mycounts <- mean.counts[-to.rm]
+
+```
+
+```{r}
+
+pos <- which(mean.counts[,3] >=2, arr.ind = TRUE)
+
+pos_count <- mean.counts[pos,]
+
+pos_count <- pos_count[!is.infinite(rowSums(pos_count)),]
+nrow(pos_count)
+```
+
+
+
+```{r}
+neg <- which(mean.counts[,3] <=-2, arr.ind = TRUE)
+
+neg_count <- mean.counts[neg,]
+neg_count <- neg_count[!is.infinite(rowSums(neg_count)),]
+nrow(neg_count)
+```
+
+## 4. Adding annotation data
+
+```{r}
+anno <- read.csv("data/annotables_grch38.csv")
+head(anno)
+```
+
+
+
+
+using the **merge()** fucntion to add another data to our 'mycounts' results
+```{r}
+mycounts.anno <- merge(x= mycounts, y = anno, by.x = 0, by.y = "ensgene")
+```
+
+
+## We can use bioconductor to do this as well... 
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+```
+
+
+
+```{r}
+columns(org.Hs.eg.db)
+```
+
+
+
+
+```{r}
+mycounts$symbol <- mapIds(org.Hs.eg.db,
+                     keys=row.names(mycounts), # Our genenames
+                     keytype="ENSEMBL",        # The format of our genenames
+                     column="SYMBOL",          # The new format we want to add
+                     multiVals="first")
+```
+
+
+
+
+
+```{r}
+mycounts$entrez <- mapIds(org.Hs.eg.db,
+                          keys = row.names(mycounts),
+                          keytype ="ENSEMBL",
+                          column = "ENTREZID",
+                          multiVals = "first")
+
+
+mycounts$uniprot <- mapIds(org.Hs.eg.db,
+                          keys = row.names(mycounts),
+                          keytype ="ENSEMBL",
+                          column = "UNIPROT",
+                          multiVals = "first")
+```
+
+
+```{r}
+citation("DESeq2")
+```
+
+
+Building our deseq dataset object
+```{r}
+library(DESeq2)
+dds <- DESeqDataSetFromMatrix(countData = counts,
+                              colData = metadata,
+                              design = ~dex,
+                              tidy = TRUE)
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+
+Get our results
+```{r}
+res <- results(dds)
+res
+```
+
+
+```{r}
+summary(res)
+```
+
+```{r}
+res05 <- results(dds, alpha= 0.05)
+summary(res05)
+```
+
+```{r}
+#coloring and building my graph
+mycols <- rep("gray", nrow(res))
+mycols[res$padj < 0.05] <- "red"
+mycols[abs(res$log2FoldChange) > 2 & res$padj < 0.05] <- "blue"
+plot(res$log2FoldChange, -log(res$padj), col = mycols)
+abline(h= -log(0.05), v = c(2,-2), lty = 2, col = "darkgray")
+```
+
+An alternative way to make volcano plots is with the Enhanced
+
+But first lets put proper gene names on our results (i.e. gene 'symbols')
+
+```{r}
+x <- as.data.frame(res)
+x$symbol <- mapIds(org.Hs.eg.db, 
+                   keys=row.names(x),
+                   keytype="ENSEMBL",
+                   column="SYMBOL",
+                   multiVals="first")
+```
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+library(EnhancedVolcano)
+```
+
+
+
+
+
+
+
