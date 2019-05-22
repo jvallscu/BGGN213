@@ -1,0 +1,233 @@
+---
+title: 'Class 15 RNA-seq: Pathway analysis'
+author: "Joan M. Valls Cuevas"
+date: "5/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library("DESeq2")
+```
+
+
+```{r}
+countFile <- "GSE37704_featurecounts.csv"
+metaFile <- "GSE37704_metadata.csv"
+```
+
+```{r}
+colData = read.csv(metaFile, row.names = 1)
+head(colData)
+```
+```{r}
+countData = read.csv(countFile, row.names = 1)
+head(countData)
+```
+```{r}
+countData <- countData[,-1]
+head(countData)
+
+```
+
+
+
+```{r}
+#countData[!countData[,1] == 0,]
+
+
+nonzero.inds <- rowSums(countData) != 0
+
+countData <- countData[nonzero.inds,]
+
+head(countData)
+
+```
+
+
+##running DESeq2
+```{r}
+
+dds = DESeqDataSetFromMatrix(countData=countData,
+                             colData=colData,
+                             design=~condition)
+
+dds = DESeq(dds)
+
+```
+
+
+Get our results
+
+
+```{r}
+
+res <- results(dds)
+
+head(res)
+
+summary(res)
+
+
+
+```
+
+
+```{r}
+
+mycols <- rep("gray", nrow(res))
+mycols[abs(res$log2FoldChange) > 2 ] <- "red"
+inds <- abs(res$log2FoldChange) > 2 & res$padj < 0.01
+mycols[inds] <- "blue"
+plot(res$log2FoldChange,-log(res$padj), col = mycols)
+abline(v = c(-2,2), col = "green")
+abline(h = -log(0.01), col = "green")
+
+```
+
+
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+
+columns(org.Hs.eg.db)
+
+res$symbol = mapIds(org.Hs.eg.db,
+                    keys=rownames(res), 
+                    keytype="ENSEMBL",
+                    column="SYMBOL",
+                    multiVals="first")
+head(res)
+
+res$entrez = mapIds(org.Hs.eg.db,
+                    keys=rownames(res),
+                    keytype="ENSEMBL",
+                    column="ENTREZID",
+                    multiVals="first")
+
+res$name =   mapIds(org.Hs.eg.db,
+                    keys=rownames(res),
+                    keytype= "ENSEMBL",
+                    column= "GENENAME",
+                    multiVals="first")
+
+head(res, 10)
+```
+
+
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+rld <- rlog(dds)
+plotPCA(rld)
+```
+
+
+
+```{r}
+library(pathview)
+library(gage)
+library(gageData)
+```
+
+```{r}
+data(kegg.sets.hs)
+data(sigmet.idx.hs)
+
+
+kegg.sets.hs = kegg.sets.hs[sigmet.idx.hs]
+
+
+```
+
+
+```{r}
+foldchanges = res$log2FoldChange
+names(foldchanges) = res$entrez
+head(foldchanges)
+```
+
+
+
+```{r}
+keggres = gage(foldchanges, gsets= kegg.sets.hs)
+```
+
+
+```{r}
+attributes(keggres)
+```
+
+
+```{r}
+head(keggres$less)
+```
+
+```{r}
+pathview(gene.data = foldchanges, pathway.id = "hsa04110", kegg.native = FALSE)
+```
+
+![](hsa04110.pathview.png)
+
+
+
+```{r}
+keggrespathways <- rownames(keggres$greater)[1:5]
+
+
+keggresids = substr(keggrespathways, start=1, stop=8)
+keggresids
+
+
+pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa",
+         kegg.native = FALSE)
+```
+
+
+
+
+
+
+
+## Gene Ontology (GO)
+
+again we will use **gage()** but this time using GO rather than KEGG
+```{r}
+data(go.sets.hs)
+data(go.subs.hs)
+
+# Focus on Biological Process subset of GO
+gobpsets = go.sets.hs[go.subs.hs$BP]
+
+gobpres = gage(foldchanges, gsets=gobpsets, same.dir=TRUE)
+
+lapply(gobpres, head)
+```
+
+
+
+
+
+
+
+```{r}
+
+```
+
+
+
+
