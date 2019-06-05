@@ -6,20 +6,20 @@ This is my course from [BGGN-213 from UC San Diego](https://bioboot.github.io/bg
 
 My class content includes:
 
-- Class 05: [Data exploration and visualization in R ]
-- Class 06: [R functions]
+- Class 05: [Data exploration and visualization in R ](class05/class05.md)
+- Class 06: [R functions](class06/class06.md)
 - Class 07: [Bioinformatics R packages from CRAN and bioconductor](https://github.com/jvallscu/BGGN213/blob/master/class07/class07.md) 
-- Class 08: [Intro to machine learning]
-- Class 09: [Unsupervised learning]
-- Class 10: [Intro to Git]
-- Class 11: [Structural Bioinformatics]
-- Class 12: [Bioinformatics in drug discovery and design]
-- Class 13: [Genome informatics and high throughput sequencing]
-- Class 14: [Transcriptomics and the analysis of RNA-Seq data ]
-- Class 15: [Gene annotations and interpretations of lists ]
-- Class 16: [Essential UNIX for bioinformatics]
-- Class 17: [Biological network analysis]
-- Class 18: [Cancer Genomics]
+- Class 08: [Intro to machine learning](class08/class08.md)
+- Class 09: [Unsupervised learning](class09/class09.md)
+- Class 10: [Intro to Git](class10/class10.md)
+- Class 11: [Structural Bioinformatics](class11/class11.md)
+- Class 12: [Bioinformatics in drug discovery and design](class12/class12.md)
+- Class 13: [Genome informatics and high throughput sequencing](class13/class13.md)
+- Class 14: [Transcriptomics and the analysis of RNA-Seq data ](class14/class14.md)
+- Class 15: [Gene annotations and interpretations of lists](class15/class15.md)
+- Class 16: [Essential UNIX for bioinformatics](class16/class16.md)
+- Class 17: [Biological network analysis](class17/class17.md)
+- Class 18: [Cancer Genomics](class18/class18.md)
 
 
 
