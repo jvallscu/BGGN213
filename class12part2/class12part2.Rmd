@@ -1,0 +1,99 @@
+---
+title: "Class 12: structural informatics (prt2)"
+author: "Joan M. Valls Cuevas"
+date: "5/10/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library("bio3d")
+
+file.name <- get.pdb("1hsg")
+
+hiv <- read.pdb(file.name)
+hiv
+```
+
+```{r}
+#
+prot <- atom.select(hiv, "protein", value = TRUE)
+prot
+lig <- atom.select(hiv, "ligand", value = TRUE)
+lig
+
+
+```
+
+
+```{r}
+write.pdb(prot, file = "1hsg_protein.pdb")
+write.pdb(lig, file = "1hsg_ligand.pdb")
+```
+
+
+##Add hydrogens and charges in ADT
+
+We opened our protein only PDB file in AutoDocTools and added hydrogens and atom-types needed for docking calculations.
+
+#Run docking 
+
+We will use the AutoDoc VIna here at the UNIX command line
+
+The command I used was:
+~/Downloads/autodock_vina_1_1_2_mac/bin/vina --config config.txt --log log.txt
+
+
+
+## Process results back in R
+
+```{r}
+res <- read.pdb("all.pdbqt", multi = TRUE)
+res
+write.pdb(res, file = "results.pdb")
+```
+
+
+
+Compare out docking poses to the MERK drug 
+```{r}
+
+ori <- read.pdb("ligand.pdbqt")
+rmsd(ori, res)
+
+  
+```
+
+Scenario two
+NMA in bio3d
+
+```{r}
+pdb <- read.pdb("1hel")
+modes <- nma(pdb)
+m7 <- mktrj(modes, mode=7, file="nma_7.pdb")
+#Shows where molecule is most likely to be flexible
+plot(modes, sse=pdb)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

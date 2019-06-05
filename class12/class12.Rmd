@@ -1,0 +1,123 @@
+---
+title: "Class_12"
+author: "Joan M. Valls Cuevas"
+date: "5/8/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Revisit the PDB
+```{r}
+dat <- read.csv("Data_Export_Summary.csv")
+
+rowSums(dat[,2:4])/sum(dat$Total)*100
+
+sum(dat$Proteins) / sum(dat$Total)*100
+
+
+```
+
+
+
+## Section 3. Using bio3D
+
+Let's read the PDB file we downloaded into R and see how things live in this place
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+pdb <- read.pdb(file = "1hsg.pdb")
+pdb
+```
+
+```{r}
+aa321(pdb$seqres)
+
+```
+```{r}
+pdb$atom
+
+```
+###Atom select examples
+```{r}
+# Select all C-alpha atoms (return their indices)
+ca.inds <- atom.select(pdb, resno=10, value = TRUE) 
+ca.inds
+```
+```{r}
+pdb2 <- atom.select(pdb, "protein" , value = TRUE)
+write.pdb(pdb2, file = "1hsg_protein.pdb")
+
+pdb3 <- atom.select(pdb, "ligand", value = TRUE )
+write.pdb(pdb3, file = "1hsg_ligand.pdb")
+```
+
+```{r}
+
+install.packages("devtools")
+devtools::install_bitbucket("Grantlab/bio3d-view")
+install.packages("rgl")
+
+```
+```{r}
+library("bio3d-view")
+
+```
+
+
+
+
+Section 6
+
+working with multiple pdb files
+```{r}
+
+# Download some example PDB files
+ids <- c("1TND_B","1AGR_A","1TAG_A","1GG2_A","1KJY_A","4G5Q_A")
+files <- get.pdb(ids, split = TRUE)
+```
+
+
+
+
+```{r}
+# Extract and align the chains we are interested in
+pdbs <- pdbaln(files, fit = TRUE)
+# Print to screen a summary of the 'pdbs' object
+View(pdbs)
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+
+
+```{r}
+pc1 <- 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
