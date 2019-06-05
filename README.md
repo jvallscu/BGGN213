@@ -13,13 +13,13 @@ My class content includes:
 - Class 09: [Unsupervised learning]
 - Class 10: [Intro to Git]
 - Class 11: [Structural Bioinformatics]
-- Class 12: [R functions]
-- Class 13: [R functions]
-- Class 14: [R functions]
-- Class 15: [R functions]
-- Class 16: [R functions]
-- Class 17: [R functions]
-- Class 18: [R functions]
+- Class 12: [Bioinformatics in drug discovery and design]
+- Class 13: [Genome informatics and high throughput sequencing]
+- Class 14: [Transcriptomics and the analysis of RNA-Seq data ]
+- Class 15: [Gene annotations and interpretations of lists ]
+- Class 16: [Essential UNIX for bioinformatics]
+- Class 17: [Biological network analysis]
+- Class 18: [Cancer Genomics]
 
 
 
