@@ -2,7 +2,7 @@
 title: 'Class 15 RNA-seq: Pathway analysis'
 author: "Joan M. Valls Cuevas"
 date: "5/22/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
