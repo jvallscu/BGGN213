@@ -2,7 +2,7 @@
 title: "Class13"
 author: "Joan M. Valls Cuevas"
 date: "5/15/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
