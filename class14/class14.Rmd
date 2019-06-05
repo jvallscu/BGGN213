@@ -2,7 +2,7 @@
 title: "Class 14: Genome informatics part 2"
 author: "Joan M. Valls Cuevas"
 date: "5/17/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
