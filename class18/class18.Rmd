@@ -1,0 +1,227 @@
+---
+title: "Class18: Cancer genomics and Immunoinformatics"
+author: "Joan M. Valls Cuevas"
+date: "5/31/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What is cancer?
+
+Q5.
+
+pancreas
+
+Q6.
+
+
+
+```{r eval=FALSE}
+
+BiocManager::install("GenomicDataCommons")
+
+```
+
+```{r}
+
+
+library(GenomicDataCommons)
+library(TCGAbiolinks)
+library(maftools)
+library(bio3d)
+```
+
+
+
+
+```{r}
+status()
+```
+
+
+
+```{r}
+projects <- getGDCprojects()
+head(projects)
+
+```
+
+
+
+
+
+
+```{r}
+cases_by_project <- cases() %>%
+  facet("project.project_id") %>%
+  aggregations()
+head(cases_by_project)
+```
+
+```{r}
+x <- cases_by_project$project.project_id
+
+# Make a custom color vector for our plot
+colvec <- rep("lightblue", nrow(x))
+colvec[x$key == "TCGA-PAAD"] <- "red"
+
+# Plot with 'log' for y axis and rotate labels with 'las'
+#par(___)  
+barplot(x$doc_count, names.arg= x$key, log="y", col=colvec, las=2)
+```
+
+##Section 2
+
+
+```{r}
+
+```
+
+
+
+>P53_wt Cellular tumor antigen p53 - Healthy Tissue
+MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMDDLMLSPDDIEQWFTEDPGP
+DEAPRMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAK
+SVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHE
+RCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNS
+SCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENLRKKGEPHHELP
+PGSTKRALPNNTSSSPQPKKKPLDGEYFTLQIRGRERFEMFRELNEALELKDAQAGKEPG
+GSRAHSSHLKSKKGQSTSRHKKLMFKTEGPDSD
+
+>P53_mutant Cellular tumor antigen p53 - Tumor Tissue
+MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMLDLMLSPDDIEQWFTEDPGP
+DEAPWMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAK
+SVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHE
+RCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFVHSVVVPYEPPEVGSDCTTIHYNYMCNS
+SCMGGMNRRPILTIITLEV
+
+
+
+```{r}
+
+
+my_data <- read.fasta("lecture18_sequences.fa")
+
+read.fasta("lecture18_sequences.fa")
+
+(my_data$ali[1,] == my_data$ali[2,])
+
+
+start <- 41 + 8
+end <- 41 - 8
+
+seq1 <- my_data$ali[,end:start]
+
+
+my_data$ali[,]
+
+```
+
+
+
+```{r}
+ide <- conserv(my_data, method = "identity")
+
+ide < 1 
+```
+
+
+
+
+```{r}
+gaps <- gap.inspect(my_data)
+mismatch.inds <- which(ide < 1)
+
+gaps.inds <- gaps$t.inds
+
+tumor.sites <- mismatch.inds[!mismatch.inds %in% gaps.inds]
+
+
+#template a[!a %in% b] 
+#find the positions in mismatch.inds that are NOT in gap.inds
+```
+
+
+```{r}
+my_data$ali[,tumor.sites]
+
+paste( my_data$ali[1,tumor.sites], tumor.sites,
+       my_data$ali[2,tumor.sites], sep="")
+
+
+```
+```{r}
+start.ind <- tumor.sites - 8
+end.ind <-  tumor.sites + 8
+my_data$ali[2, start.ind[1]: end.ind[1]]
+
+tumor <- NULL
+
+for( i in 1:length(start.ind)) {
+  tumor <-  seqbind(tumor,
+                    my_data$ali[2,start.ind[i]: end.ind[i]])
+  
+}
+tumor
+```
+
+
+
+```{r}
+#bio3d::write.fasta(ids=ids,alignment=tumor, file="subseq.fa")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
