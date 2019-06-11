@@ -1,0 +1,33 @@
+---
+title: "Find a gene assignment"
+author: "Joan M. Valls Cuevas"
+date: "6/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Question 6
+
+```{r}
+
+library(bio3d)
+
+```
+
+```{r}
+
+align_seqs <- read.fasta("muscle-I20190604-051354-0982-84809485-p1m.fst")
+
+```
+
+
+```{r}
+
+
+
+```
+
+
