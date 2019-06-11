@@ -6,11 +6,10 @@ Joan M. Valls Cuevas
 What is cancer?
 ---------------
 
-Q5.
+Q5. What is the most frequentely mutated position associated with cancer in the KRas protein (i.e. the amino acid with the most mutations)?
 
-pancreas
+Pancreas
 
-Q6.
 
 ``` r
 BiocManager::install("GenomicDataCommons")
