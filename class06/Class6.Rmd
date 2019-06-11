@@ -2,7 +2,7 @@
 title: 'Class: R Function'
 author: "Joan M Valls Cuevas"
 date: "4/19/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
