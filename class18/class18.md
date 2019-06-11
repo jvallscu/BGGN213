@@ -14,7 +14,7 @@ Pancreas
 ``` r
 BiocManager::install("GenomicDataCommons")
 ```
-
+Load tools
 ``` r
 library(GenomicDataCommons)
 ```
