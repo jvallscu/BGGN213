@@ -11,7 +11,7 @@ My class content includes:
 - Class 07: [Bioinformatics R packages from CRAN and bioconductor](https://github.com/jvallscu/BGGN213/blob/master/class07/class07.md) 
 - Class 08: [Intro to machine learning](class08/class08.md)
 - Class 09: [Unsupervised learning](class09/Unsupervised_learning.md)
-- Class 10: [Intro to Git(find a gene project: R file](find_a_gene/find_a_gene.md)
+- Class 10: [Intro to Git(find a gene project: R file)](find_a_gene/find_a_gene.md)
 - Class 11: [Structural Bioinformatics](class12/class12.md)
 - Class 12: [Bioinformatics in drug discovery and design](class12part2/class12part2.md)
 - Class 13: [Genome informatics and high throughput sequencing](class13//Class13.md)
