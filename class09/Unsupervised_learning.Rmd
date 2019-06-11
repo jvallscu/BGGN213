@@ -2,7 +2,7 @@
 title: "Unsupervised_learning_2"
 author: "Joan M. Valls Cuevas"
 date: "5/1/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
