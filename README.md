@@ -17,8 +17,8 @@ My class content includes:
 - Class 13: [Genome informatics and high throughput sequencing](class13//Class13.md)
 - Class 14: [Transcriptomics and the analysis of RNA-Seq data ](class14/class14.md)
 - Class 15: [Gene annotations and interpretations of lists](class15/class15.md)
-- Class 16: [Essential UNIX for bioinformatics](class16/class16.md)
-- Class 17: [Biological network analysis](class17/class17.md)
+- Class 16: Essential UNIX for bioinformatics : No R file created in class
+- Class 17: Biological network analysis : No R file created 
 - Class 18: [Cancer Genomics](class18/class18.md)
 
 
