@@ -14,7 +14,7 @@ My class content includes:
 - Class 10: [Intro to Git](class10/class10.md)
 - Class 11: [Structural Bioinformatics](class11/class11.md)
 - Class 12: [Bioinformatics in drug discovery and design](class12/class12.md)
-- Class 13: [Genome informatics and high throughput sequencing](class13/class13.md)
+- Class 13: [Genome informatics and high throughput sequencing](class13//class12part2.md)
 - Class 14: [Transcriptomics and the analysis of RNA-Seq data ](class14/class14.md)
 - Class 15: [Gene annotations and interpretations of lists](class15/class15.md)
 - Class 16: [Essential UNIX for bioinformatics](class16/class16.md)
