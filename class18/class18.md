@@ -17,32 +17,9 @@ BiocManager::install("GenomicDataCommons")
 Load tools
 ``` r
 library(GenomicDataCommons)
-```
 
-    ## Loading required package: magrittr
-
-    ## 
-    ## Attaching package: 'GenomicDataCommons'
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-
-``` r
 library(TCGAbiolinks)
-```
 
-    ## Registered S3 methods overwritten by 'ggplot2':
-    ##   method         from 
-    ##   [.quosures     rlang
-    ##   c.quosures     rlang
-    ##   print.quosures rlang
-
-    ## Registered S3 method overwritten by 'R.oo':
-    ##   method        from       
-    ##   throw.default R.methodsS3
-
-``` r
 library(maftools)
 library(bio3d)
 ```
