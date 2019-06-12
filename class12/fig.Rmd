@@ -61,11 +61,11 @@ files <- get.pdb(ids, split = TRUE)
 
 ```{r}
 # Extract and align the chains we are interested in
-#pdbs <- pdbaln(files, fit = TRUE)
+pdbs <- pdbaln(files, fit = TRUE)
 # Print to screen a summary of the 'pdbs' object
-#View(pdbs)
-#pc.xray <- pca(pdbs)
-#plot(pc.xray)
+View(pdbs)
+pc.xray <- pca(pdbs)
+plot(pc.xray)
 ```
 
 
